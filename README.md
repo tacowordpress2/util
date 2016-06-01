@@ -1,3 +1,3 @@
 # Taco Util
 
-Utility methods for Taco
+Utility methods for Tacos
