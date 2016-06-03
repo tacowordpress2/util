@@ -18,9 +18,9 @@ class Str
         // Cleanup
         $out = str_replace('_', ' ', $str);
         $out = ucwords(strtolower($out));
-        $out = preg_replace('/[\s]{2,}/', ' ', $out);
-        $out = preg_replace('/^[\s]/', '', $out);
-        $out = preg_replace('/[\s]$/', '', $out);
+        $out = preg_replace('/\s{2,}/', ' ', $out);
+        $out = preg_replace('/^\s/', '', $out);
+        $out = preg_replace('/\s$/', '', $out);
         if (strlen($out) === 0) {
             return $out;
         }
@@ -80,7 +80,7 @@ class Str
         $first_word_lower = strtolower($words[0]);
         $first_word_lower_no_contraction = preg_replace("/'s$/", '', $first_word_lower);
         $is_question = in_array($first_word_lower_no_contraction, self::questionWords());
-        $has_question_mark = (bool) preg_match('/[\?]{1,}$/', $out);
+        $has_question_mark = (bool) preg_match('/\?+$/', $out);
         if ($is_question && !$has_question_mark) {
             $out .= '?';
         }
@@ -99,7 +99,7 @@ class Str
     {
         $out = strtolower($str);
         $out = preg_replace('/[^a-z0-9' . $separator . ']/', $separator, $out);
-        $out = preg_replace('/[' . $separator . ']{2,}/', $separator, $out);
+        $out = preg_replace('/' . $separator . '{2,}/', $separator, $out);
         $out = preg_replace('/^' . $separator . '/', '', $out);
         $out = preg_replace('/' . $separator . '$/', '', $out);
         return $out;
@@ -189,6 +189,6 @@ class Str
      */
     public static function camelToHuman($input)
     {
-        return preg_replace('/([a-z]{1,})([A-Z]{1,})/', "$1 $2", $input);
+        return preg_replace('/([a-z])([A-Z])/', "$1 $2", $input);
     }
 }

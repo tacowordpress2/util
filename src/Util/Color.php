@@ -62,7 +62,7 @@ class Color
     {
         $hex = preg_replace('/[^a-zA-Z0-9]/', '', $hex);
         if (strlen($hex) === 3) {
-            $hex = preg_replace('/([a-f0-9]{1})/i', "$1$1", $hex);
+            $hex = preg_replace('/([a-f0-9])/i', "$1$1", $hex);
         }
         return array_combine(array('r','g','b'), array_map('hexdec', str_split($hex, 2)));
     }
