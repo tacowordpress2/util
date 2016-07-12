@@ -107,6 +107,30 @@ class Str
     
     
     /**
+     * Mechanize
+     * This is an improved version of machine() that transliterates accented
+     * characters and removes apostrophes
+     * @param string $str
+     * @param string $separator
+     * @return string
+     */
+    public static function mechanize($str, $separator = '_')
+    {
+        $out = strtolower($str);
+        $out = self::transliterate($out);
+        $out = preg_replace(
+            array('/[\'’]/', '/[^a-zA-Z0-9\s_]/', '/[\s_]+/', '/^_|_$/'),
+            array('', '_', '_', ''),
+            $out
+        );
+        if ($separator !== '_') {
+            $out = str_replace('_', $separator, $out);
+        }
+        return $out;
+    }
+    
+    
+    /**
      * Transliterate
      * @param string $str
      * @return string
@@ -232,6 +256,92 @@ class Str
         
         $out = preg_replace($original, $transliterated, $str);
         return $out;
+    }
+
+
+    /**
+     * Convert to snake case
+     * @param string $str
+     * @return string
+     */
+    public static function snake($str)
+    {
+        return self::mechanize($str, '_');
+    }
+
+
+    /**
+     * Convert to kebab case
+     * @param string $str
+     * @return string
+     */
+    public static function kebab($str)
+    {
+        return self::mechanize($str, '-');
+    }
+
+
+    /**
+     * Convert to chain case
+     * @param string $str
+     * @return string
+     */
+    public static function chain($str)
+    {
+        return self::kebab($str);
+    }
+    
+    
+    /**
+     * Convert to Pascal case
+     * @param string $str
+     * @return string
+     */
+    public static function pascal($str)
+    {
+        $str = self::transliterate($str);
+        $words = preg_split('/[\W_]/', $str);
+        $words = array_filter(array_map('ucfirst', $words));
+        return join('', $words);
+    }
+    
+    
+    /**
+     * Convert to camel case
+     * @param string $str
+     * @return string
+     */
+    public static function camel($str)
+    {
+        $pascal = self::pascal($str);
+        return lcfirst($pascal);
+    }
+    
+    
+    /**
+     * Convert between two string formats
+     * @param string $str
+     * @param string $from
+     * @param string $to
+     * @return string
+     */
+    public static function convert($str, $from, $to)
+    {
+        if ($from === 'camel' && $to === 'human') {
+            $human = preg_replace('/([a-z])([A-Z])/', '$1 $2', $str);
+            $human = preg_replace('/(\D)?(\d+)(\D)?/', '$1 $2 $3', $human);
+            return trim($human);
+        }
+        
+        if (in_array($from, ['machine', 'snake', 'chain', 'kebab']) && $to === 'camel') {
+            $separators = preg_replace('/[^_-]/', '', $str);
+            if (!strlen($separators)) {
+                return ucfirst($str);
+            }
+            $split = explode(substr($separators, 0, 1), $str);
+            $split = array_map('ucfirst', $split);
+            return join('', $split);
+        }
     }
 
 
