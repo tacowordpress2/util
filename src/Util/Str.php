@@ -313,8 +313,29 @@ class Str
      */
     public static function camel($str)
     {
-        $pascal = self::pascal($str);
-        return lcfirst($pascal);
+        return lcfirst(self::pascal($str));
+    }
+    
+    
+    /**
+     * Convert to screaming snake case
+     * @param string $str
+     * @return string
+     */
+    public static function scream($str)
+    {
+        return strtoupper(self::snake($str));
+    }
+    
+    
+    /**
+     * Convert to constant case
+     * @param string $str
+     * @return string
+     */
+    public static function constant($str)
+    {
+        return self::scream($str);
     }
     
     
