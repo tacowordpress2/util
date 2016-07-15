@@ -121,4 +121,32 @@ class Num
 
         return $string;
     }
+    
+    
+    /**
+     * Sanitize a list of numeric IDs, and return the same format
+     * @param array/string $ids (array or comma-separated list)
+     * @return array/string (same as input type)
+     */
+    public static function sanitizeIDs($ids)
+    {
+        if (!is_array($ids)) {
+            $return_string = true;
+            $ids = explode(',', $ids);
+        }
+        if (!Arr::iterable($ids)) {
+            return false;
+        }
+
+        $ids = array_map('trim', $ids);
+        $ids = array_filter($ids, 'strlen');
+        $ids = array_map('intval', $ids);
+        $ids = array_map('abs', $ids);
+
+        return ($return_string)
+            ? join(',', $ids)
+            : $ids;
+    }
+
+    
 }
