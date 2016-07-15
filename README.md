@@ -7,7 +7,7 @@ This is required when using [Taco](https://github.com/tacowordpress/tacowordpres
 ```json
 {
   "require": {
-    "tacowordpress/tacowordpress": "dev-master”,
+    "tacowordpress/tacowordpress": "dev-master",
     "tacowordpress/util": "dev-master"
   }
 }
