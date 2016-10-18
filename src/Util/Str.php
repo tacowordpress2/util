@@ -137,7 +137,7 @@ class Str
      */
     public static function transliterate($str)
     {
-        $transliterations = [
+        $transliterations = array(
             'a' => 'áăâäàāąåãǻǎ',
             'ae' => 'æǽ',
             'c' => 'ćčçĉċ',
@@ -194,7 +194,7 @@ class Str
             '2' => '²',
             '3' => '³',
             '4' => '⁴',
-        ];
+        );
         
         $originals = array_map(function($el){
             return '/['.$el.']/u';
@@ -299,7 +299,7 @@ class Str
             return trim($human);
         }
         
-        if (in_array($from, ['machine', 'snake', 'chain', 'kebab']) && $to === 'camel') {
+        if (in_array($from, array('machine', 'snake', 'chain', 'kebab')) && $to === 'camel') {
             $separators = preg_replace('/[^_-]/', '', $str);
             if (!strlen($separators)) {
                 return ucfirst($str);
