@@ -369,7 +369,7 @@ class Str
      */
     public static function shortenWordsByChar($input, $num_chars = 35, $hellip = '&nbsp;&hellip;')
     {
-        if (strlen($input) < $num_chars) {
+        if (strlen($input) <= $num_chars) {
             return $input;
         }
 
