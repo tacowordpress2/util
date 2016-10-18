@@ -239,14 +239,23 @@ class Str
     
     /**
      * Convert to Pascal case
+     *
+     * Forcing will remove any existing uppercase
+     * Example: "Fetch HTML"
+     * - Without force: "FetchHTML"
+     * - With force: "FetchHtml"
+     *
      * @param string $str
+     * @param bool $force
      * @return string
      */
-    public static function pascal($str)
+    public static function pascal($str, $force = false)
     {
-        $str = self::transliterate($str);
-        $words = preg_split('/[\W_]/', $str);
-        $words = array_filter(array_map('ucfirst', $words));
+        $words = ($force)
+            ? explode(' ', self::mechanize($str, ' '))
+            : preg_split('/[\W_]/', self::transliterate($str));
+        
+        $words = array_map('ucfirst', $words);
         return join('', $words);
     }
     
@@ -254,11 +263,11 @@ class Str
     /**
      * Convert to camel case
      * @param string $str
+     * @param bool $force
      * @return string
      */
-    public static function camel($str)
-    {
-        return lcfirst(self::pascal($str));
+    public static function camel($str, $force = false) {
+        return lcfirst(self::pascal($str, $force));
     }
     
     
