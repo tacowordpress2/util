@@ -197,7 +197,7 @@ class Str
         );
         
         $originals = array_map(function($el){
-            return '/['.$el.']/u';
+            return '/[' . $el . ']/u';
         }, array_values($transliterations));
         $out = preg_replace($originals, array_keys($transliterations), $str);
         return $out;
@@ -392,7 +392,7 @@ class Str
         if ($words[$last_key] !== $shortened_words[$last_key]) {
             unset($words[$last_key]);
         }
-        return join(' ', $words).$hellip;
+        return join(' ', $words) . $hellip;
     }
     
     
@@ -405,4 +405,22 @@ class Str
     {
         return preg_replace('/([a-z])([A-Z])/', "$1 $2", $input);
     }
+    
+    
+    /**
+     * Replace non-breaking spaces with regular spaces
+     * The fourth item in $search_spaces is a pasted non-breaking space
+     * @param string $input
+     * @return string
+     */
+    public static function cleanSpaces($input)
+    {
+        $nonbreaking_space = chr(0xC2) . chr(0xA0);
+        $search_spaces = ['<p>&nbsp;</p>', '&nbsp;', $nonbreaking_space, ' '];
+        $replace_spaces = ['', ' ', ' ', ' '];
+        $out = str_replace($search_spaces, $replace_spaces, $input);
+        $out = trim(preg_replace('/\s{2,}/', ' ', $out));
+        return $out;
+    }
+    
 }
