@@ -1,4 +1,5 @@
 <?php
+namespace Taco\Util;
 
 class View
 {
