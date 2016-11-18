@@ -1,6 +1,8 @@
 <?php
 namespace Taco\Util;
 
+use \Taco\Config as Config;
+
 class Theme {
   
   /**
@@ -217,7 +219,7 @@ class Theme {
    * @return string
    */
   public static function pageTitle() {
-    $short_site_name = TacoConfig::get()->site_name;
+    $short_site_name = Config::get()->site_name;
     $separator = self::pageTitleSeparator();
     $title = wp_title(null, false);
     
@@ -244,7 +246,7 @@ class Theme {
     
     $page_title_taxonomy = $this_post->pageTitleTaxonomy();
     
-    if(TacoConfig::get()->use_yoast) {
+    if(Config::get()->use_yoast) {
       $yoast_title = $this_post->getSafe('_yoast_wpseo_title');
       $yoast_title_has_site_name = preg_match('/'.$site_name.'$/', $yoast_title);
       if(!empty($yoast_title) && $yoast_title_has_site_name) {
@@ -280,7 +282,7 @@ class Theme {
    * @return string
    */
   private static function pageTitleSeparator() {
-    return TacoConfig::get()->page_title_separator;
+    return Config::get()->page_title_separator;
   }
   
   
@@ -306,14 +308,14 @@ class Theme {
     if(!Obj::iterable($this_post)) return null;
     
     $description = null;
-    if(TacoConfig::get()->use_yoast) {
+    if(Config::get()->use_yoast) {
       $description = $this_post->getSafe('_yoast_wpseo_metadesc');
     }
     if(empty($description)) {
       $description = strip_tags($this_post->getBareExcerpt());
     }
     
-    $image = (TacoConfig::get()->use_yoast)
+    $image = (Config::get()->use_yoast)
       ? $this_post->{'_yoast_wpseo_opengraph-image'}
       : null;
     
@@ -334,7 +336,7 @@ class Theme {
    * @return string
    */
   public static function appIcons() {
-    $config = TacoConfig::instance();
+    $config = Config::instance();
     $icons_directory = THEME_DIRECTORY.'/'.$config->app_icons_directory;
     $icons_url = THEME_URL.'/'.$config->app_icons_directory;
     if(!file_exists($icons_directory)) return null;
