@@ -12,6 +12,9 @@ class View
      */
     public static function setDirectories($directories)
     {
+        if (!Arr::iterable($directories)) {
+            $directories = [];
+        }
         self::$directories = $directories;
     }
     
