@@ -129,17 +129,16 @@ class Theme {
     }, $subclasses);
     if(in_array($edit_type, $subclasses_machine)) {
       // Edit post or display list of posts of this type
-      $post_type_link = (!is_null($id))
+      $post_type_url = (!is_null($id))
         ? get_edit_post_link($id)
         : '/wp-admin/edit.php?post_type='.$edit_type;
-      return sprintf(
-        '<%s %s><a href="%s">Edit %s</a></%s>',
-        $link_tag,
-        $link_class,
-        $post_type_link,
-        $label,
-        $link_tag
-      );
+      return View::make('util/edit-link', [
+        'link_tag' => $link_tag,
+        'link_class' => $link_class,
+        'url' => $post_type_url,
+        'label' => 'Edit '.$label,
+        'link_tag' => $link_tag,
+      ]);
     }
     
     // Find an applicable post type for editing a custom term
@@ -171,26 +170,28 @@ class Theme {
     
     if(is_null($id)) {
       // View taxonomy term list
-      return sprintf(
-        '<%s %s><a href="/wp-admin/edit-tags.php?taxonomy=%s&post_type=%s">View %ss</a></%s>',
-        $link_tag,
-        $link_class,
+      $term_list_url = sprintf(
+        '/wp-admin/edit-tags.php?taxonomy=%s&post_type=%s',
         $edit_type,
-        $post_type,
-        $label,
-        $link_tag
+        $post_type
       );
+      return View::make('util/edit-link', [
+        'link_tag' => $link_tag,
+        'link_class' => $link_class,
+        'url' => $term_list_url,
+        'label' => 'View '.$label,
+        'link_tag' => $link_tag,
+      ]);
     }
     
     // Edit term
-    return sprintf(
-      '<%s %s><a href="%s">Edit %s</a></%s>',
-      $link_tag,
-      $link_class,
-      get_edit_term_link($id, $edit_type, $post_type),
-      $label,
-      $link_tag
-    );
+    return View::make('util/edit-link', [
+      'link_tag' => $link_tag,
+      'link_class' => $link_class,
+      'url' => get_edit_term_link($id, $edit_type, $post_type),
+      'label' => 'Edit '.$label,
+      'link_tag' => $link_tag,
+    ]);
   }
 
 
