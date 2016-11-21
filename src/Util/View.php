@@ -5,9 +5,11 @@ class View
 {
     
     private static $directories = null;
+    private static $report_errors = false;
     
     
     /**
+     * Set views directories
      * @param array $directories
      */
     public static function setDirectories($directories)
@@ -20,15 +22,24 @@ class View
     
     
     /**
+     * Set error reporting
+     * @param bool $report_errors
+     */
+    public static function setErrorReporting($report_errors = false)
+    {
+        self::$report_errors = $report_errors;
+    }
+    
+    
+    /**
      * Include file with scoped variables
      * @param string $path
      * @param array $variables
      * @param bool $include_once
-     * @param bool $die_on_error
      */
-    public static function make($path, $variables = [], $include_once = false, $die_on_error = false)
+    public static function make($path, $variables = [], $include_once = false)
     {
-        $view_path = self::find($path, $die_on_error);
+        $view_path = self::find($path);
         
         if (Arr::iterable($variables)) {
             extract($variables);
@@ -47,10 +58,9 @@ class View
     /**
      * Find matching view
      * @param string $path
-     * @param bool $die_on_error
      * @return string
      */
-    private static function find($path, $die_on_error = false)
+    private static function find($path)
     {
         $view_path = null;
         foreach (self::$directories as $directory) {
@@ -62,7 +72,7 @@ class View
         }
         
         if (empty($view_path)) {
-            if ($die_on_error) {
+            if (self::$report_errors) {
                 die('View not found: ' . $view_path);
             }
             return null;
