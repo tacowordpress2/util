@@ -312,7 +312,7 @@ class Theme {
       $description = $this_post->getSafe('_yoast_wpseo_metadesc');
     }
     if(empty($description)) {
-      $description = strip_tags($this_post->getBareExcerpt());
+      $description = strip_tags($this_post->getTheExcerpt());
     }
     
     $image = (Config::get()->use_yoast)
