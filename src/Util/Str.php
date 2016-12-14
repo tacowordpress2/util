@@ -295,31 +295,32 @@ class Str
     
     /**
      * Convert between two string formats
-     * @param string $str
+     * @param string $input
      * @param string $from
      * @param string $to
      * @return string
      */
-    public static function convert($str, $from, $to)
+    public static function convert($input, $from, $to)
     {
-        if ($from === 'camel' && $to === 'human') {
-            $human = preg_replace('/([a-z])([A-Z])/', '$1 $2', $str);
-            $human = preg_replace('/(\D)?(\d+)(\D)?/', '$1 $2 $3', $human);
-            return trim($human);
+        if (!method_exists(self::class, $to)) {
+            return $input;
         }
         
-        if (in_array($from, array('machine', 'snake', 'chain', 'kebab')) && $to === 'camel') {
-            $separators = preg_replace('/[^_-]/', '', $str);
-            if (!strlen($separators)) {
-                return ucfirst($str);
-            }
-            $split = explode(substr($separators, 0, 1), $str);
-            $split = array_map('ucfirst', $split);
-            return join('', $split);
+        if (in_array($from, ['camel', 'pascal'])) {
+            $converted = self::$from($input);
+            $converted = preg_replace('/([a-z])([A-Z])/', '$1 $2', $converted);
+            $converted = preg_replace('/(\D)?(\d+)(\D)?/', '$1 $2 $3', $converted);
+            return self::$to($converted);
         }
+        
+        if (method_exists(self::class, $from)) {
+            return self::$to(self::$from($input));
+        }
+        
+        return self::$to($input);
     }
-
-
+    
+    
     /**
      * Get an array of stop words
      * Stop words are words which are filtered out prior to, or after, processing of natural language data
