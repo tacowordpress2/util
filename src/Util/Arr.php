@@ -26,6 +26,10 @@ class Arr
      */
     public static function mean($arr)
     {
+        if (!Arr::iterable($arr)) {
+            return false;
+        }
+
         return array_sum($arr) / count($arr);
     }
     
@@ -37,26 +41,34 @@ class Arr
      */
     public static function median($arr)
     {
+        if (!Arr::iterable($arr)) {
+            return false;
+        }
+
         $vals = array_values($arr);
         sort($vals);
         
         $num_vals = count($vals);
-        return ($num_vals % 2)
-            ? ($vals[$num_vals / 2] + $vals[($num_vals / 2) + 1]) / 2
-            : $vals[($num_vals + 1) / 2];
+        return ($num_vals % 2 === 0)
+            ? ($vals[$num_vals / 2] + $vals[($num_vals / 2) - 1]) / 2
+            : $vals[($num_vals - 1) / 2];
     }
     
     
     /**
-     * Get the mode
+     * Get the mode (Note: this is somewhat non-determinate because it depends on the order that items are in the array)
      * @param array $arr
      * @return mixed
      */
     public static function mode($arr)
     {
+        if (!Arr::iterable($arr)) {
+            return false;
+        }
+
         $vals = array_count_values($arr);
         asort($vals);
-        return end(array_keys($vals));
+        return array_keys($vals)[count($vals) - 1];
     }
     
     

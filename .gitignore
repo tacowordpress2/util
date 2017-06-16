@@ -1,0 +1,5 @@
+.sass-cache
+.DS_Store
+vendor/
+composer.lock
+/tests/coverage_report
