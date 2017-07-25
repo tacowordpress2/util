@@ -12,7 +12,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Taco\\": "src/"
+      "Taco\\Util\\": "src/Util"
     }
   }
 }
