@@ -36,3 +36,10 @@ echo \Taco\Util\View::make('article/article-list', [
 
 The View class will look in the directories you specified in `config.php`, starting with the first. If no view file is found, it will check the next one, and so on.
 
+## Changelog
+
+### v1.0.1
+Fixing static function calls in Str::convert which was causing PHP 7 errors
+
+### v1.0
+First version ported from tacowordpress

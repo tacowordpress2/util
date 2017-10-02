@@ -104,8 +104,8 @@ class Str
         $out = preg_replace('/' . $separator . '$/', '', $out);
         return $out;
     }
-    
-    
+
+
     /**
      * Mechanize
      * This is an improved version of machine() that transliterates accented
@@ -128,8 +128,8 @@ class Str
         }
         return $out;
     }
-    
-    
+
+
     /**
      * Transliterate
      * @param string $str
@@ -163,7 +163,7 @@ class Str
             'w' => 'ẃŵẅẁ',
             'y' => 'ýŷÿỳ',
             'z' => 'źžż',
-            
+
             'A' => 'ÁĂÂÄÀĀĄÅÃǺǍ',
             'Ae' => 'ÆǼ',
             'C' => 'ĆČÇĈĊ',
@@ -189,13 +189,13 @@ class Str
             'W' => 'ẂŴẄẀ',
             'Y' => 'ÝŶŸỲ',
             'Z' => 'ŹŽŻ',
-            
+
             '1' => '¹',
             '2' => '²',
             '3' => '³',
             '4' => '⁴',
         );
-        
+
         $originals = array_map(function($el){
             return '/[' . $el . ']/u';
         }, array_values($transliterations));
@@ -235,8 +235,8 @@ class Str
     {
         return self::kebab($str);
     }
-    
-    
+
+
     /**
      * Convert to Pascal case
      *
@@ -254,12 +254,12 @@ class Str
         $words = ($force)
             ? explode(' ', self::mechanize($str, ' '))
             : preg_split('/[\W_]/', self::transliterate($str));
-        
+
         $words = array_map('ucfirst', $words);
         return join('', $words);
     }
-    
-    
+
+
     /**
      * Convert to camel case
      * @param string $str
@@ -269,8 +269,8 @@ class Str
     public static function camel($str, $force = false) {
         return lcfirst(self::pascal($str, $force));
     }
-    
-    
+
+
     /**
      * Convert to screaming snake case
      * @param string $str
@@ -280,8 +280,8 @@ class Str
     {
         return strtoupper(self::snake($str));
     }
-    
-    
+
+
     /**
      * Convert to constant case
      * @param string $str
@@ -291,8 +291,8 @@ class Str
     {
         return self::scream($str);
     }
-    
-    
+
+
     /**
      * Convert between two string formats
      * @param string $input
@@ -302,25 +302,25 @@ class Str
      */
     public static function convert($input, $from, $to)
     {
-        if (!method_exists(self::class, $to)) {
+        if (!method_exists(get_called_class(), $to)) {
             return $input;
         }
-        
+
         if (in_array($from, ['camel', 'pascal'])) {
-            $converted = self::$from($input);
+            $converted = static::$from($input);
             $converted = preg_replace('/([a-z])([A-Z])/', '$1 $2', $converted);
             $converted = preg_replace('/(\D)?(\d+)(\D)?/', '$1 $2 $3', $converted);
-            return self::$to($converted);
+            return static::$to($converted);
         }
-        
-        if (method_exists(self::class, $from)) {
-            return self::$to(self::$from($input));
+
+        if (method_exists(get_called_class(), $from)) {
+            return static::$to(static::$from($input));
         }
-        
-        return self::$to($input);
+
+        return static::$to($input);
     }
-    
-    
+
+
     /**
      * Get an array of stop words
      * Stop words are words which are filtered out prior to, or after, processing of natural language data
@@ -331,8 +331,8 @@ class Str
     {
         return array('a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 'am', 'among', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'because', 'been', 'but', 'by', 'can', 'cannot', 'could', 'dear', 'did', 'do', 'does', 'either', 'else', 'ever', 'every', 'for', 'from', 'get', 'got', 'had', 'has', 'have', 'he', 'her', 'hers', 'him', 'his', 'how', 'however', 'i', 'if', 'in', 'into', 'is', 'it', 'its', 'just', 'least', 'let', 'like', 'likely', 'may', 'me', 'might', 'most', 'must', 'my', 'neither', 'no', 'nor', 'not', 'of', 'off', 'often', 'on', 'only', 'or', 'other', 'our', 'own', 'rather', 'said', 'say', 'says', 'she', 'should', 'since', 'so', 'some', 'than', 'that', 'the', 'their', 'them', 'then', 'there', 'these', 'they', 'this', 'tis', 'to', 'too', 'twas', 'us', 'wants', 'was', 'we', 'were', 'what', 'when', 'where', 'which', 'while', 'who', 'whom', 'why', 'will', 'with', 'would', 'yet', 'you', 'your');
     }
-    
-    
+
+
     /**
      * Get an array of stop words that should typically be lowercase in the middle of a phrase
      * @return array
@@ -352,8 +352,8 @@ class Str
     {
         return array('who', 'what', 'where', 'when', 'why', 'how', 'which', 'wherefore', 'whatever', 'whom', 'whose', 'wherewith', 'whither', 'whence');
     }
-    
-    
+
+
     /**
      * Shorten a string
      * @param string $input
@@ -395,8 +395,8 @@ class Str
         }
         return join(' ', $words) . $hellip;
     }
-    
-    
+
+
     /**
      * Camel case to human
      * @param string $input
@@ -406,8 +406,8 @@ class Str
     {
         return preg_replace('/([a-z])([A-Z])/', "$1 $2", $input);
     }
-    
-    
+
+
     /**
      * Replace non-breaking spaces with regular spaces
      * The fourth item in $search_spaces is a pasted non-breaking space
@@ -423,5 +423,5 @@ class Str
         $out = trim(preg_replace('/\s{2,}/', ' ', $out));
         return $out;
     }
-    
+
 }
