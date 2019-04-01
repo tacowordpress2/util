@@ -73,7 +73,7 @@ class View
         
         if (empty($view_path)) {
             if (self::$report_errors) {
-                die('View not found: ' . $view_path);
+                die('View not found: ' . $path);
             }
             return null;
         }
